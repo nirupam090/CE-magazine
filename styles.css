@@ -304,6 +304,25 @@ body {
   border-bottom: none;
 }
 
+.toc-item.toc-sub-item {
+  padding: 1.5mm 0 1.5mm 8mm;
+  font-size: 0.85rem;
+  border-bottom: 0.5px dotted var(--border-light);
+}
+
+.toc-item.toc-sub-item .toc-number {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-width: 8mm;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.toc-item.toc-sub-item .toc-label {
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
 .toc-number {
   font-family: var(--font-heading);
   font-weight: 700;
