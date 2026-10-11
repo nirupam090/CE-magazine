@@ -1,383 +1,209 @@
 """
-Part 4 of Version 3 Magazine:
-- Section 14: Industry-Institute Interaction & Professional Collaborations
-- Section 15: Distinguished Alumni & Student Entrepreneurs
-- Section 16: Departmental Activities by Faculty, Students and Associations
-- Section 17: Student Support Systems, Remedial Teaching & Pedagogical Innovations
-- Section 18: Departmental Strengths, Weaknesses, Opportunities & Challenges (SWOC) & Strategic Roadmap
-- Section 19: Meet the Team — Editorial Board & Acknowledgments
+verified_builder_part4.py - Sections 14 to 19: Industry Interaction, Alumni, Activities, Student Support, SWOC, Editorial Team
 """
 
-import os
-from docx.shared import Inches, Pt, Cm, RGBColor
+import os, json
+from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT
-from v3_core import (
-    BASE, IMG, NAVY, GOLD, GOLD_DARK, GREEN, WHITE, BLACK, GREY, LIGHT_GREY,
-    NAVY_HEX, NAVY_DARK_HEX, GOLD_HEX, GOLD_BG_HEX, LIGHT_BG, BORDER_HEX,
-    BLUE_BG, GREEN_BG, GREEN_HEX, CREAM_HEX,
-    run_styled, add_spacer, section_header, sub_section_header, stat_cards,
-    pull_quote, vision_box, highlight_card, data_table, gold_rule, thin_rule,
-    body, body_rich, bullet, add_image_safe, caption, swoc_box
+from magazine_core import (
+    NAVY_HEX, GOLD_HEX, GOLD_LIGHT_HEX, GOLD_BG_HEX, LIGHT_BG,
+    NAVY, GOLD, GOLD_DARK, WHITE, BLACK, GREY,
+    run_styled, add_spacer, section_header, sub_section_header,
+    stat_cards, callout_box, data_table, body, bullet, add_image_safe
 )
 
+BASE = r'C:\Users\Nirupam\Documents\magazine ce'
+SCRATCH = r'C:\Users\Nirupam\.gemini\antigravity-ide\brain\d84a1836-479b-4390-be26-b801a6bee109\scratch'
+MEDIA_DIR = os.path.join(SCRATCH, 'baseline_media')
+
+def load_docx_data():
+    with open(os.path.join(SCRATCH, 'docx_data.json'), 'r', encoding='utf-8') as f:
+        return json.load(f)
+
 def build_section_14(doc):
-    # ═══════════════════════════════════════
-    # SECTION 14 — INDUSTRY-INSTITUTE INTERACTION
-    # ═══════════════════════════════════════
-    section_header(doc, "Industry–Institute Interaction & Professional Collaborations", "SECTION 14 — CORPORATE COLLABORATION")
+    section_header(doc, "Industry–Institute Interaction", "SECTION 14 — CORPORATE IMMERSION & CO-TEACHING")
 
-    sub_section_header(doc, "Industry Electives, MDMs & Special Skill Programmes", "14.1")
+    sub_section_header(doc, "Curriculum Industry Collaborations", "14.1")
+    body(doc, "The Department actively bridges the gap between academic pedagogy and corporate enterprise through industry-curated curriculum tracks:")
+    bullet(doc, "Banking Technology Track (in direct collaboration with Barclays): Prepares students for distributed transaction pipelines, high-frequency trading platforms, and financial security compliance.", bold_prefix="Barclays Collaboration:")
+    bullet(doc, "Management Multidisciplinary Minor (in partnership with S.P. Jain Institute of Management and Research - SPJIMR): Provides managerial and operational economics foundations.", bold_prefix="SPJIMR Management Track:")
+    bullet(doc, "Financial & Strategic Management: Industry-aligned coursework designed with Six Ladders.", bold_prefix="Six Ladders Track:")
 
-    body(doc,
-        "The Department of Computer Engineering bridges academia and industry through institutional partnerships, "
-        "co-designed curricula, credit-bearing corporate electives, and international certification programmes:")
+    sub_section_header(doc, "Alumni & Industry Internship Evaluation", "14.2")
+    body(doc, "As verified in the External Academic Audit (Criteria B, Page 18 & Criteria E, Page 53), alumni and industry practitioners actively evaluate student progress during full-semester industry internships:")
+    bullet(doc, "In AY 2024–25, 18 distinguished alumni evaluated students during industry internships.")
+    bullet(doc, "In AY 2025–26, 11 alumni and corporate evaluators conducted rigorous comprehensive technical assessments.")
 
-    bullet(doc, "Curated and co-delivered in partnership with Barclays Global Service Centre, exposing students to enterprise payment architectures, microservices, regulatory compliance, financial cybersecurity, and core banking infrastructure.", bold_prefix="MDM in Banking Technology — Barclays: ")
-    bullet(doc, "Jointly offered with S.P. Jain Institute of Management and Research (SPJIMR), introducing engineering students to strategic business modeling, technology consulting, organizational behavior, and venture finance.", bold_prefix="MDM in Management — SPJIMR: ")
-    bullet(doc, "Industry-designed credit elective focusing on Deep Learning, Visual Perception, and Edge Computing with real-world case studies in smart manufacturing and embedded computer vision.", bold_prefix="Industry Elective — Vizuara: ")
-    bullet(doc, "Specialized certification cohorts conducted under NVIDIA DLI covering accelerated computing, deep learning fundamentals, and multi-GPU neural network training.", bold_prefix="NVIDIA Deep Learning Institute (DLI) Cohort: ")
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "Co-Teaching Initiatives & Corporate Expert Sessions", "14.2")
-
-    body(doc,
-        "Co-Teaching represents a hallmark innovation of our autonomous curriculum, where courses are jointly delivered "
-        "by departmental faculty alongside premier academicians from IITs and senior engineering leaders from Fortune 500 tech firms:")
-
-    coteach_data = [
-        ("Artificial Intelligence & Machine Learning", "Dr. Maheshkumar H. Kolekar", "Associate Professor, IIT Patna", "Prof. Swapnali Kurhade"),
-        ("Banking Technology & Microservices", "Mr. Amit Sharma & Team", "Director of Engineering, Barclays", "Dr. Sudhir Dhage"),
-        ("DevOps & Cloud-Native Architecture", "Mr. Rohan Mehta", "Principal Cloud Architect, AWS", "Prof. Reeta Koshy"),
-        ("High Performance Computing & GPU Parallelism", "Dr. Alok Srivastava", "Senior Research Scientist, CDAC", "Dr. Pramod Bide")
-    ]
-
-    data_table(doc, ["Subject Area", "External Expert / Co-Teacher", "Organization / Designation", "Internal Faculty Host"], coteach_data, col_widths=[2.0, 1.8, 2.0, 1.4], compact=True)
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "Faculty Professional Development (8,600+ Hours) & Active MOUs", "14.3")
-
-    body(doc,
-        "Departmental faculty continuously upgrade their technical competencies through Short Term Training Programmes (STTP), "
-        "Faculty Development Programmes (FDP), and international certifications, logging an unprecedented 8,600+ cumulative training hours in AY 2025–26.")
-
-    chart_hours = os.path.join(IMG, 'audit_updated_slide72_img1.jpeg')
-    if os.path.exists(chart_hours):
-        add_image_safe(doc, chart_hours, width=Inches(5.0), caption_text="Figure 14.1: Faculty Training Hours Distribution (8,600+ Total Hours Across AI/ML, Cloud, Security & OBE)")
-
-    body(doc, "Active Institutional Memoranda of Understanding (MOUs):", bold=True, color=NAVY)
-
-    mou_data = [
-        ("Barclays Global Service Centre", "Curriculum Co-Design, Banking MDM, Internships & Hackathons", "Active (Renewed 2025)"),
-        ("Tata Consultancy Services (TCS)", "Research Collaboration, Student Mentorship, High-Performance Computing", "Active"),
-        ("Vizuara Private Limited", "Program Elective Delivery, Industrial AI Projects, Edge Computing", "Active"),
-        ("L&T EduTech", "Pedagogical Innovation, Industry Assessment Certification & Internships", "Active"),
-        ("IIT Bombay Trust Lab", "Cybersecurity Research, CTF Challenges, Cryptography Workshops", "Active")
-    ]
-
-    data_table(doc, ["Collaborating Industry / Agency", "Scope of Engagement", "MOU Status"], mou_data, col_widths=[2.4, 3.6, 1.2], compact=True)
+    sub_section_header(doc, "Expert Talks & Co-Teaching Sessions", "14.3")
+    bullet(doc, "Delivered by Dr. Maheshkumar H. Kolekar, Associate Professor, IIT Patna, on 13/10/2024 for the subject Artificial Intelligence and Machine Learning (AIML), arranged by Prof. Swapnali Kurhade.", bold_prefix="Academic Co-Teaching:")
+    bullet(doc, "Delivered by Soumyadeb Bhattacharjee, Strategy and Management Consultant, on 'Exploring and Preparing for Management and Consulting Careers', arranged by Dr. Sudhir N. Dhage.", bold_prefix="Alumni Industry Talk:")
 
     doc.add_page_break()
 
 def build_section_15(doc):
-    # ═══════════════════════════════════════
-    # SECTION 15 — DISTINGUISHED ALUMNI & ENTREPRENEURS
-    # ═══════════════════════════════════════
-    section_header(doc, "Distinguished Alumni & Student Entrepreneurs", "SECTION 15 — ALUMNI LEGACY")
+    section_header(doc, "Distinguished Alumni & Alumni Mentoring", "SECTION 15 — GLOBAL ALUMNI IMPACT")
 
-    sub_section_header(doc, "Alumni Mentoring Program & Project Evaluation Panel", "15.1")
+    sub_section_header(doc, "Alumni Mentoring Programme (AY 2025–26)", "15.1")
+    body(doc, "Verified alumni mentorship allocations from official Department PTM records (PTM Slide 15):")
 
-    body(doc,
-        "The Department takes immense pride in its global alumni fraternity, who occupy commanding positions across top technology companies, "
-        "premier investment banks, research laboratories, and high-growth venture-backed startups. "
-        "Alumni play an active, institutionalized role in student mentorship and academic evaluation.")
-
-    bullet(doc, "18 Alumni Evaluators participated in comprehensive project assessments for B.Tech Capstone and Internships in AY 2024–25; 11 Alumni Evaluators conducted in-depth technical reviews in AY 2025–26.", bold_prefix="Project Evaluation Panel: ")
-    bullet(doc, "Distinguished alumnus Soumyadeb Bhattacharjee conducted masterclasses on product management, consulting frameworks, and navigating FAANG technical interviews.", bold_prefix="Product Strategy Sessions: ")
-    bullet(doc, "Distinguished alumnus Dr. Maheshkumar H. Kolekar (IIT Patna) guided undergraduate researchers on publishing in top IEEE transactions and pursuing doctoral research.", bold_prefix="Academic & Research Mentorship: ")
-
-    alumni_pic1 = os.path.join(IMG, 'ptm_slide15_Google_Shape_269_p91.png')
-    if os.path.exists(alumni_pic1):
-        add_image_safe(doc, alumni_pic1, width=Inches(5.0), caption_text="Figure 15.1: Alumni Mentoring Programme Framework and Corporate Career Sessions")
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "Distinguished Alumni in Global Leadership", "15.2")
-
-    body(doc,
-        "Our graduates continue to shape the trajectory of global computing across Silicon Valley, Wall Street, London, Singapore, and India:")
-
-    alumni_roster = [
-        ("Sameer Nanavati", "Class of 2005", "Vice President — Engineering", "Goldman Sachs, New York"),
-        ("Pooja Agrawal", "Class of 2008", "Director of Product Management", "Google Cloud, Sunnyvale"),
-        ("Aditya Shah", "Class of 2011", "Principal Software Architect", "Amazon Web Services (AWS), Seattle"),
-        ("Neha Kulkarni", "Class of 2014", "Lead Data Scientist — AI Research", "Meta (Facebook), Menlo Park"),
-        ("Rohan Deshpande", "Class of 2016", "VP — Quantitative Technology", "Barclays Investment Bank, London"),
-        ("Siddharth Parikh", "Class of 2018", "Senior Engineering Manager", "Microsoft Azure, Redmond")
+    alumni_headers = ["Sr. No.", "Alumni Mentor Name", "Graduation Year", "Current Organization & Role"]
+    alumni_rows = [
+        ["1", "Akshay Polji", "2007", "Maersk Global"],
+        ["2", "Soham Kanade", "2015", "Amazon"],
+        ["3", "Rohit Naik", "2017", "Google"],
+        ["4", "Poojan Turakhia", "2020", "JP Morgan Chase & Co."],
+        ["5", "Yash Gaba", "2019", "Lovable Arts"],
+        ["6", "Darsh Mehta", "2022", "Deutsche Bank"],
+        ["7", "Tanvi Dhope", "2021", "Microsoft"]
     ]
+    data_table(doc, alumni_headers, alumni_rows, col_widths=[0.8, 2.2, 1.2, 2.8])
 
-    data_table(doc, ["Alumnus Name", "Graduating Batch", "Current Designation", "Organization & Location"], alumni_roster, col_widths=[1.8, 1.2, 2.2, 2.0], compact=True)
-
-    alumni_pic2 = os.path.join(IMG, 'ptm_slide16_Google_Shape_279_p98.png')
-    if os.path.exists(alumni_pic2):
-        add_image_safe(doc, alumni_pic2, width=Inches(5.0), caption_text="Figure 15.2: Distinguished Alumni of the Department of Computer Engineering")
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "Alumni Entrepreneurs & Startup Ventures", "15.3")
-
-    body(doc,
-        "The entrepreneurial spirit fostered in our laboratories has inspired alumni to establish dynamic, high-impact enterprises:")
-
-    startups = [
-        ("FinLogix Solutions", "Pranav Joshi (Batch 2017)", "Algorithmic Risk Infrastructure & Regulatory Tech", "Seed Funded ($1.5M)"),
-        ("NeuroHealth AI", "Dr. Karan Parekh (Batch 2015)", "Medical Computer Vision for Diagnostic Radiology", "Series A ($4.2M)"),
-        ("CloudScale Systems", "Vikram Merchant (Batch 2018)", "Autonomous Kubernetes FinOps & Cloud Optimization", "Y Combinator Alum"),
-        ("ByteSafe Cyber", "Tanmay Kelkar (Batch 2020)", "Next-Gen Zero-Trust Identity Protection Platform", "Angel Funded")
-    ]
-
-    data_table(doc, ["Startup Venture", "Founder(s) & Batch", "Core Technology Domain", "Funding / Status"], startups, col_widths=[1.8, 1.8, 2.2, 1.4], compact=True)
+    # Alumni graphics from baseline
+    add_image_safe(doc, os.path.join(MEDIA_DIR, "image9.png"), width=Inches(5.2), caption_text="Alumni Mentoring Network — Department of Computer Engineering")
+    add_image_safe(doc, os.path.join(MEDIA_DIR, "image10.png"), width=Inches(5.2), caption_text="Distinguished Alumni Across Global Tech Ecosystems")
 
     doc.add_page_break()
 
 def build_section_16(doc):
-    # ═══════════════════════════════════════
-    # SECTION 16 — ACTIVITIES & ASSOCIATIONS
-    # ═══════════════════════════════════════
-    section_header(doc, "Departmental Activities by Faculty, Students & Associations", "SECTION 16 — CO-CURRICULAR LIFE")
+    section_header(doc, "Departmental Activities & Student Associations", "SECTION 16 — TECHNICAL SOCIETIES & HACKATHONS")
 
-    sub_section_header(doc, "Parent–Teacher Meeting (PTM 2026)", "16.1")
+    sub_section_header(doc, "Parent–Teacher Meeting (PTM 2025–26)", "16.1")
+    ptm_pic = os.path.join(BASE, "PTM.JPG")
+    add_image_safe(doc, ptm_pic, width=Inches(5.5), caption_text="Parent–Teacher Meeting (PTM) — 30th April 2026, S.P.I.T. Auditorium")
+    body(doc, "The Department conducted its annual Parent–Teacher Meeting on 30th April 2026. The meeting provided parents with detailed visibility into academic progress, attendance monitoring, remedial teaching interventions, internship performance, and campus placement milestones.")
 
-    ptm_pic = os.path.join(BASE, 'PTM.JPG')
-    if os.path.exists(ptm_pic):
-        add_image_safe(doc, ptm_pic, width=Inches(5.0), caption_text="Figure 16.1: Parent–Teacher Meeting Conducted on 30th April 2026 at S.P.I.T. Auditorium")
+    sub_section_header(doc, "SPIT Hackathon 2026 (10th National Edition)", "16.2")
+    callout_box(doc,
+        "\"The 10th Edition of SPIT HACKATHON observed a massive registration of around 3,316 participants showcasing nationwide interest and competitive enthusiasm. After a rigorous shortlisting process, 78 teams were selected for the final 24-hour round at Sardar Patel Institute of Technology with a prize pool of ₹2.5 Lakhs!\"",
+        title="10TH EDITION OF SPIT HACKATHON (PTM Slide 20)",
+        border_color=NAVY_HEX, bg_color=LIGHT_BG
+    )
+    body(doc, "The hackathon featured four competitive tracks with 8 curated industry-level challenge statements: Artificial Intelligence & Machine Learning (AIML), Web Development, App Development, and Blockchain.")
 
-    body(doc,
-        "The Department of Computer Engineering conducted its annual Parent–Teacher Meeting (PTM) on 30th April 2026 in the institute auditorium, "
-        "bringing together parents, faculty counselors, and the departmental leadership. "
-        "The forum facilitated transparent dialogue regarding student attendance, continuous assessment metrics, placement readiness, "
-        "remedial mechanisms for slow learners, and career counseling for higher education. "
-        "Parents overwhelmingly commended the department's structured mentorship, open-door policy, and individual academic attention.")
+    sub_section_header(doc, "Departmental Technical Events", "16.3")
+    bullet(doc, "Organized on Thursday, 16th October 2025 across fourth-floor computer labs. Integrated competitive programming challenges with a traditional Housie format, testing algorithms, logic, and rapid execution.", bold_prefix="CodeHousie:")
+    bullet(doc, "Frontend hackathon organized by C.S.I.-SPIT in collaboration with ACSES SPIT on 14th February 2026. Engaged 211 undergraduate students in UI/UX architecture, responsive design, and modern web frameworks.", bold_prefix="Pixel Perfect:")
+    bullet(doc, "Odd Semester: Git Workshop, Code Housie, Something Decentralised. Even Semester: Pixel Perfect, ML Sprint, Code-It-Ralph, and Codefolio portfolio reviews.", bold_prefix="FACE Association Events:")
 
-    thin_rule(doc)
+    sub_section_header(doc, "IEEE Student Branch & IIC Technical Competitions", "16.4")
+    bullet(doc, "Held under the Institution's Innovation Council (IIC). Tested foundational computing logic, algorithmic reasoning, and problem-solving velocity.", bold_prefix="BrainDrain Competition 2025–26:")
+    bullet(doc, "Fostered research methodologies, problem formulation, and structured proposal writing among undergraduate scholars.", bold_prefix="Research Ideation 2025–26:")
 
-    sub_section_header(doc, "Computer Society of India (CSI) — SPIT Chapter", "16.2")
-
-    body(doc,
-        "The CSI-SPIT Chapter continues to stand among the most dynamic student technical chapters in western India, organizing premier competitive programming, "
-        "hackathon, and developer workshops:")
-
-    bullet(doc, "Held on 21st and 22nd February 2026, the 10th Edition of the flagship national hackathon attracted a staggering 3,316 registrations from across India. Following rigorous screening, 78 finalist teams (2–4 members each) competed for 24 continuous hours across four industry tracks: Artificial Intelligence & Machine Learning (AIML), Web Development, App Development, and Blockchain, competing for a prize pool of ₹2,50,000.", bold_prefix="SPIT Hackathon 2026 — 10th National Edition: ")
-    bullet(doc, "Conducted on 16th October 2025 in the 4th-floor computer labs, CodeHousie offered a distinctive, exhilarating format by seamlessly integrating fast-paced coding problems with the traditional Housie game mechanics, driving intense participation.", bold_prefix="CodeHousie (16 Oct 2025): ")
-    bullet(doc, "Organized on 14th February 2026 in collaboration with ACSES SPIT, Pixel Perfect challenged 211 undergraduate participants to replicate complex, pixel-perfect UI/UX layouts under strict frontend time constraints using modern CSS frameworks and micro-interactions.", bold_prefix="Pixel Perfect (14 Feb 2026): ")
-
-    csi_pic1 = os.path.join(IMG, 'doc_16._Departmental_Activities_by_Faculty,_Students_and_Associations_img5.png')
-    csi_pic2 = os.path.join(IMG, 'doc_16._Departmental_Activities_by_Faculty,_Students_and_Associations_img6.png')
-    if os.path.exists(csi_pic1):
-        add_image_safe(doc, csi_pic1, width=Inches(4.6), caption_text="Figure 16.2: Students Actively Solving Algorithm Challenges in CodeHousie 2025")
-    if os.path.exists(csi_pic2):
-        add_image_safe(doc, csi_pic2, width=Inches(4.6), caption_text="Figure 16.3: Pixel Perfect UI/UX Frontend Hackathon Briefing and Competition")
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "IEEE Computer Society — SPIT Student Branch", "16.3")
-
-    body(doc,
-        "The IEEE Computer Society Student Branch fostered deep research acumen and exposure to frontier technologies through flagship technical symposiums:")
-
-    bullet(doc, "A multi-stage technical quiz testing advanced algorithmic intuition, system architecture, operating systems internals, and security theory across undergraduate cohorts.", bold_prefix="Brain Drain: ")
-    bullet(doc, "A research incubation competition encouraging undergraduates to author IEEE-format research proposals, review literature systematically, and defend experimental methodologies before faculty panels.", bold_prefix="Research Ideation: ")
-    bullet(doc, "National expert conclave exploring Quantum Algorithms, Qiskit programming, Quantum Key Distribution, and Post-Quantum Cryptography.", bold_prefix="Quantum Conclave: ")
-    bullet(doc, "Flagship AI Summit featuring keynotes on Foundation Models, GPU infrastructure scaling, and Responsible AI deployments.", bold_prefix="AIRAVAT 3.0 HPC Summit: ")
-
-    ieee_pic1 = os.path.join(IMG, 'audit_updated_slide58_img4.jpeg')
-    ieee_pic2 = os.path.join(IMG, 'audit_updated_slide59_img4.jpeg')
-    if os.path.exists(ieee_pic1):
-        add_image_safe(doc, ieee_pic1, width=Inches(4.6), caption_text="Figure 16.4: IEEE Computer Society Technical Seminar and Research Ideation Session")
-    if os.path.exists(ieee_pic2):
-        add_image_safe(doc, ieee_pic2, width=Inches(4.6), caption_text="Figure 16.5: IEEE Brain Drain & Student Research Presentation Conclave")
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "FACE — Forum of Aspiring Computer Engineers", "16.4")
-
-    body(doc,
-        "The Forum of Aspiring Computer Engineers (FACE) champions student community welfare, creative expression, and social responsibility:")
-
-    bullet(doc, "FACE organized two major institutional donation drives collecting books, educational stationery, and refurbished computing hardware to support underprivileged municipal schools in suburban Mumbai.", bold_prefix="Donation Drives 1 & 2: ")
-    bullet(doc, "Intra-departmental technical faceoff testing rapid coding, system debugging, and algorithmic problem-solving across junior and senior batches.", bold_prefix="FaceOff 2025: ")
-    bullet(doc, "Portfolio development workshop equipping students to build production-grade GitHub profiles, host full-stack projects, and author technical blogs.", bold_prefix="Codefolio: ")
-    bullet(doc, "Annual cultural, photography, and liberal arts showcase displaying student achievements in LLC courses including Yoga, Photography, and Film Appreciation.", bold_prefix="Liberal Learning Showcases: ")
+    # Event media from baseline
+    add_image_safe(doc, os.path.join(MEDIA_DIR, "image12.jpg"), width=Inches(3.2), caption_text="Departmental Technical Activities & Hackathons")
+    add_image_safe(doc, os.path.join(MEDIA_DIR, "image13.jpg"), width=Inches(3.2), caption_text="Interactive Problem Solving Sessions")
 
     doc.add_page_break()
 
 def build_section_17(doc):
-    # ═══════════════════════════════════════
-    # SECTION 17 — STUDENT SUPPORT & PEDAGOGY
-    # ═══════════════════════════════════════
-    section_header(doc, "Student Support Systems, Remedial Teaching & Pedagogical Innovations", "SECTION 17 — STUDENT SUPPORT")
+    section_header(doc, "Student Support, Remedial Teaching & Pedagogy", "SECTION 17 — PEDAGOGICAL EXCELLENCE")
 
-    sub_section_header(doc, "Structured Support for Slow Learners & Challenges for Fast Learners", "17.1")
+    data = load_docx_data()
+    file17 = data['17. Student Support.docx']
 
-    body(doc,
-        "The Department operationalizes a differentiated learning model that identifies students' individual learning paces early in each semester "
-        "and provides customized pedagogical interventions:")
+    sub_section_header(doc, "Slow & Fast Learners Support Summary (AY 2025–26)", "17.1")
+    t1 = file17['tables'][0]['rows']
+    # Filter valid rows
+    t1_rows = [r for r in t1[1:] if any(c.strip() for c in r)]
+    data_table(doc, ["Faculty Name", "Subject", "Semester", "Intervention Type & Activities", "Hours"], t1_rows, col_widths=[1.5, 1.6, 0.7, 2.4, 0.8], compact=True)
 
-    bullet(doc, "Students identified via In-Semester Test 1 scoring and continuous lab assessments receive targeted remedial assignments in core courses including Operating Systems (Sem 4, 3 hrs), Artificial Intelligence & Soft Computing (Sem 5, 3 hrs), and AIML (Sem 5, 3 hrs), complemented by small-group tutorial sessions totaling 60 hours of structured remedial intervention.", bold_prefix="Slow Learner Support Framework: ")
-    bullet(doc, "High-achieving students are provided advanced challenges that push computational boundaries. Fast learners in Operating Systems completed a 54-hour Disk Scheduling Simulator project (Logic implementation 8–12 hrs, Canvas animation engine 12–15 hrs, UI design 10–15 hrs, Integration 6–10 hrs, Testing 5–8 hrs, Documentation 3–5 hrs). In AIML, fast learners completed a 52-hour project reviewing IEEE transactions, configuring cutting-edge deep learning libraries, and tuning model hyperparameters.", bold_prefix="Fast Learner Advanced Challenges: ")
+    sub_section_header(doc, "Slow & Fast Learners Support Summary (AY 2024–25)", "17.2")
+    t2 = file17['tables'][1]['rows']
+    t2_rows = [r for r in t2[1:] if any(c.strip() for c in r)]
+    data_table(doc, ["Faculty Name", "Subject", "Semester", "Intervention Type & Activities", "Hours"], t2_rows, col_widths=[1.5, 1.6, 0.7, 2.4, 0.8], compact=True)
 
-    support_pic1 = os.path.join(IMG, 'doc_17._Student_Support_img4.png')
-    support_pic2 = os.path.join(IMG, 'doc_17._Student_Support_img8.png')
-    if os.path.exists(support_pic1):
-        add_image_safe(doc, support_pic1, width=Inches(4.6), caption_text="Figure 17.1: Slow and Fast Learner Analysis Documentation and Attainment Tracking")
-    if os.path.exists(support_pic2):
-        add_image_safe(doc, support_pic2, width=Inches(4.6), caption_text="Figure 17.2: Innovative Teaching–Learning Verification and Student Assessment Review")
+    sub_section_header(doc, "Innovative Teaching–Learning Practices (AY 2025–26)", "17.3")
+    t3 = file17['tables'][2]['rows']
+    t3_rows = []
+    for r in t3:
+        if len(r) >= 6 and r[0].strip().isdigit():
+            sr, name, title, subj, cls, sem = [c.strip() for c in r[:6]]
+            t3_rows.append([sr, name, subj, cls, title])
+    data_table(doc, ["Sr.", "Faculty Name", "Subject", "Class / Sem", "Innovative Pedagogical Intervention"], t3_rows, col_widths=[0.5, 1.6, 1.0, 1.1, 2.8], compact=True)
 
-    thin_rule(doc)
-
-    sub_section_header(doc, "Innovative Teaching–Learning Practices by Faculty Roster", "17.2")
-
-    body(doc,
-        "Faculty members employ interactive pedagogical techniques to transform abstract computational concepts into tangible, engaging experiences:")
-
-    innov_data = [
-        ("Prof. Jyoti Ramteke", "Fun Quiz using Mentimeter", "AISC / DBMS", "TE Comps C&D / SE-CSE", "Real-time gamified quizzes assessing knowledge retention and conceptual clarity."),
-        ("Prof. Reeta Koshy", "Flipped Classroom & Group Discussion", "DevOps", "TE Comps AB", "Students review research papers prior to class and present micro-concepts, driving peer learning."),
-        ("Prof. Swapnali Kurhade", "Mentimeter, Think-Pair-Share & Open Book", "AIIA / AIML / OS", "Final Year / TE / SE", "Interactive polling, peer discussion pairs, and open-book analytical problem-solving."),
-        ("Prof. Abhijeet Salunke", "Chinese Remainder Theorem Card Trick", "CNS", "TE Comps", "Magic card trick illustrating the mathematical foundations of public-key cryptography."),
-        ("Prof. Anand Godbole", "The 5-Card Trick for Discrete Structures", "DSGT", "SE Comps", "Combinatorial card puzzle illustrating discrete graph theory, permutation cycles, and logic."),
-        ("Dr. Pramod Bide", "QR Code Scanning via Android Devices", "HPC", "B.E. Comps", "Instant mobile QR code verification for distributed cluster access and parallel compute tracking.")
-    ]
-
-    data_table(doc, ["Faculty Name", "Pedagogical Innovation", "Subject", "Target Class", "Pedagogical Impact & Outcome"], innov_data, col_widths=[1.5, 1.8, 1.0, 1.2, 1.7], compact=True)
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "360-Degree Mentorship & Transparent Evaluation Governance", "17.3")
-
-    bullet(doc, "Every faculty member serves as an academic and personal counselor to a cohort of 15 students, meeting fortnightly to review attendance, academic progress, and well-being.", bold_prefix="Faculty Proctor System (1:15 Ratio): ")
-    bullet(doc, "Course question papers are set in two parallel sets with complete Bloom's taxonomy mapping (L1–L6) and vetted by a departmental moderation committee.", bold_prefix="Two-Set ESE Question Papers: ")
-    bullet(doc, "Following examinations, evaluated answer scripts are displayed to students in an Open House, ensuring complete transparency and constructive feedback.", bold_prefix="Open House Script Evaluation: ")
-    bullet(doc, "Final exam score distributions are statistically modeled against Gaussian curves (e.g., Operating Systems semester average of SA=73) to ensure consistent evaluation standards.", bold_prefix="Gaussian Mark Distribution: ")
+    sub_section_header(doc, "Innovative Teaching–Learning Practices (AY 2024–25)", "17.4")
+    t4 = file17['tables'][3]['rows']
+    t4_rows = []
+    for r in t4:
+        if len(r) >= 6 and r[0].strip().isdigit():
+            sr, name, title, subj, cls, sem = [c.strip() for c in r[:6]]
+            t4_rows.append([sr, name, subj, cls, title])
+    data_table(doc, ["Sr.", "Faculty Name", "Subject", "Class / Sem", "Innovative Pedagogical Intervention"], t4_rows, col_widths=[0.5, 1.6, 1.0, 1.1, 2.8], compact=True)
 
     doc.add_page_break()
 
 def build_section_18(doc):
-    # ═══════════════════════════════════════
-    # SECTION 18 — SWOC ANALYSIS & ROADMAP
-    # ═══════════════════════════════════════
-    section_header(doc, "Departmental Strengths, Weaknesses, Opportunities & Challenges", "SECTION 18 — STRATEGIC ANALYSIS")
+    section_header(doc, "SWOC Analysis & Departmental Goals", "SECTION 18 — STRATEGIC APPRAISAL & ROADMAP")
 
-    sub_section_header(doc, "Comprehensive SWOC Analysis Matrix", "18.1")
+    sub_section_header(doc, "Departmental SWOC Analysis Matrix (Audit PDF Page 78)", "18.1")
 
-    body(doc,
-        "A candid institutional appraisal of the Department of Computer Engineering's internal competencies and external environment:")
+    # Strengths
+    callout_box(doc,
+        "• Established Academic Ecosystem: Autonomous, NEP 2020-aligned curriculum with flexible electives, experiential learning, and outcome-based education (OBE).\n• Research & Higher Studies: Active student/faculty research, IPR filing, 40 publications (15 journals + 25 conferences), and 32 students in premier higher studies.\n• Industry & Alumni Engagement: Direct corporate curriculum tracks (Barclays, SPJIMR), 11 alumni evaluators, and 98.21% placement rate.",
+        title="STRENGTHS (S)",
+        border_color=NAVY_HEX, bg_color=LIGHT_BG
+    )
 
-    swoc_box(doc, "Institutional Strengths (S)", [
-        "Unprecedented 98.21% campus placement rate with top-tier tech giants, peak package of ₹44.0 LPA, and 91 offers in Elite and Super Dream tiers.",
-        "Four consecutive cycles of National Board of Accreditation (NBA) accreditation (2013, 2016, 2021, and 2024), attesting to sustained academic quality.",
-        "Pioneering NEP 2020 Liberal 'Pi-Model' curriculum featuring 160 credits with a 57% choice-based flexibility basket and 57 distinct learning pathways.",
-        "Robust faculty profile: 30 faculty members, 12 doctoral degree holders (40%), 6 pursuing Ph.D., and over 8,600 hours of professional FDP/STTP training.",
-        "Substantial capital investment in laboratories: ₹49,44,388 upgrade deploying 80 HP ProDesk workstations, complementing ₹23,12,800 in existing high-end assets.",
-        "Scholarly research surge: 10 research grant proposals submitted worth ₹6.05 Crores (DRDO, SERB, AICTE), ₹10.2L consultancy, and 1,077+ citations.",
-        "High-achieving student ecosystem: National Champions at EY Techathon 6.0 (₹3L prize), Barclays Hackathon, GATE DA AIR-97, and global Bug Bounty Halls of Fame."
-    ], border_color=NAVY_HEX, bg_color=LIGHT_BG)
+    # Weaknesses
+    callout_box(doc,
+        "• Sponsored Research & Grants: Need to scale sustained externally sponsored project funding, industrial consultancy, and large-scale government R&D outlays.\n• Documentation & Action Tracking: Opportunity to further systematize continuous improvement records and longitudinal mentoring logs.\n• Interdisciplinary Research: Scope to broaden collaborative cross-departmental funded initiatives.",
+        title="AREAS TO STRENGTHEN / WEAKNESSES (W)",
+        border_color=GOLD_HEX, bg_color=GOLD_BG_HEX
+    )
 
-    swoc_box(doc, "Institutional Weaknesses (W)", [
-        "Extramural research funding remains dependent on public grant sanction cycles; need for sustained corporate-funded research endowments.",
-        "Doctoral research scholar intake needs further scaling to match the high research output of the faculty body.",
-        "Need for dedicated experimental hardware cleanrooms for Quantum Computing and Autonomous Robotics prototyping.",
-        "Limited international dual-degree student exchange programs with overseas universities."
-    ], border_color=GOLD_HEX, bg_color=GOLD_BG_HEX)
+    # Opportunities
+    callout_box(doc,
+        "• Frontier Computing Domains: Deepen curriculum and specialized laboratories in Generative AI, Cloud-Native Systems, Cybersecurity, and Quantum Computing.\n• Collaborative Research Ecosystem: Expand research partnerships with national laboratories (IIT Bombay, DRDO) and industry technology hubs.\n• Innovation & Entrepreneurship: Convert hackathon prototypes into commercial ventures, startup incubation, and patent filings.",
+        title="OPPORTUNITIES (O)",
+        border_color=NAVY_HEX, bg_color=LIGHT_BG
+    )
 
-    swoc_box(doc, "Strategic Opportunities (O)", [
-        "Massive global industry demand for specialized talent in Generative AI, Large Language Models, Edge Computing, and Post-Quantum Cybersecurity.",
-        "Institutional autonomy under NEP 2020 enables rapid curricular customization with multinational technology partners.",
-        "Establishment of industry-sponsored Centers of Excellence (CoE) in Deep Learning, FinTech, and Secure Distributed Systems.",
-        "Commercialization of faculty and student intellectual property, patent licensing, and incubation of student-led deep-tech startups."
-    ], border_color=GREEN_HEX, bg_color=GREEN_BG)
+    # Challenges
+    callout_box(doc,
+        "• Rapid Technology Lifecycles: Continuous alignment of computing curricula, software tools, and faculty proficiencies with accelerating industry paradigms.\n• Scaling Quality Mentorship: Sustaining personalized research mentoring, project guidance, and lab access with expanded student cohorts (240 intake).\n• Global Competition: Fierce competition for sponsored research grants, faculty talent acquisition, and tier-1 corporate partnerships.",
+        title="CHALLENGES (C)",
+        border_color=GOLD_HEX, bg_color=GOLD_BG_HEX
+    )
 
-    swoc_box(doc, "External Challenges (C)", [
-        "Rapid, disruptive shifts in industrial technology frameworks requiring continuous faculty reskilling and frequent laboratory re-tooling.",
-        "Escalating infrastructure and licensing costs for enterprise GPU clusters and cloud compute platforms.",
-        "Intense regional and national competition from private universities and newly established technological institutions."
-    ], border_color=BORDER_HEX, bg_color=CREAM_HEX)
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "Core Institutional Pillars & Department Strengths", "18.2")
-
-    body(doc,
-        "The departmental identity rests on six core institutional pillars:")
-
-    pillars = [
-        ("Pillar 1: Academic Agility & Autonomy", "The ability to rapidly integrate industry shifts into credit courses within months rather than years."),
-        ("Pillar 2: Experiential Project Culture", "Sustained project-based learning beginning in Semester V, culminating in patentable capstones and hackathon victories."),
-        ("Pillar 3: Deep Industry Symbiosis", "Embedded Multidisciplinary Minors (Barclays, SPJIMR) ensuring students understand corporate realities prior to graduation."),
-        ("Pillar 4: Research & Innovation Vitality", "High-volume publication in Scopus/SCIE venues and aggressive extramural grant mobilization (₹6.05 Cr)."),
-        ("Pillar 5: Student-Centric Mentorship", "Individualized proctoring (1:15 ratio), structured remedial teaching, and Open House transparent evaluation."),
-        ("Pillar 6: Ethical & Human Grounding", "Liberal learning courses in yoga, philosophy, and social drives ensuring technology serves humanity.")
-    ]
-
-    for title, desc in pillars:
-        bullet(doc, desc, bold_prefix=f"{title}: ")
-
-    thin_rule(doc)
-
-    sub_section_header(doc, "Strategic Roadmap 2026–2030 (6 Strategic Horizon Goals)", "18.3")
-
-    goals = [
-        ("Goal 1: Center of Excellence in Generative AI & Autonomous Systems", "Establish a dedicated institutional CoE equipped with enterprise multi-GPU clusters to anchor funded research and corporate consulting by 2027."),
-        ("Goal 2: 100% Doctoral Faculty Profile", "Enable all 6 currently pursuing faculty to complete their Ph.D. degrees, achieving an 80%+ Ph.D. faculty ratio by 2028."),
-        ("Goal 3: Scaling Extramural Research Funding to ₹2.0+ Crores Annually", "Secure sanction of major national grant proposals (DRDO, SERB) to maintain recurring annual extramural research funding exceeding ₹2.0 Crores."),
-        ("Goal 4: International Dual-Degree & Academic Exchange Tracks", "Formalize articulation agreements with top US and European universities for 3+1+1 accelerated Master's pathways by 2028."),
-        ("Goal 5: Incubation of 10+ Student Deep-Tech Startups", "Leverage the institute incubation center to spin off ten venture-funded student startups based on capstone IP by 2030."),
-        ("Goal 6: National Top-5 Ranking in Autonomous Computing Programs", "Consistently achieve NIRF Top-100 institutional ranking and benchmark academic outcomes against premier national institutions.")
-    ]
-
-    for title, desc in goals:
-        highlight_card(doc, title, desc, accent_hex=NAVY_HEX, bg_hex=BLUE_BG)
+    sub_section_header(doc, "Strategic Goals of the Department 2026–2030 (Audit PDF Page 79)", "18.2")
+    bullet(doc, "Expand funded research, consultancy outlays, IPR generation, and interdisciplinary project activity.", bold_prefix="Goal 01 — Research & Sponsored Projects:")
+    bullet(doc, "Deepen corporate co-teaching, sponsored labs, 6-month internships, and executive expert engagement.", bold_prefix="Goal 02 — Industry–Academia Integration:")
+    bullet(doc, "Continuously strengthen learning infrastructure for AI/ML, GenAI, Quantum Computing, and Cybersecurity.", bold_prefix="Goal 03 — Emerging Technology Readiness:")
+    bullet(doc, "Convert student hackathon projects and capstones into functional prototypes, research publications, and patents.", bold_prefix="Goal 04 — Innovation & Entrepreneurship:")
+    bullet(doc, "Expand research internships, academic exchanges, and progression pathways to world-class universities.", bold_prefix="Goal 05 — Global & Higher-Study Engagement:")
+    bullet(doc, "Use annual academic audit evidence, stakeholder feedback, and attainment data for continuous pedagogical enhancement.", bold_prefix="Goal 06 — Continuous Quality Improvement:")
 
     doc.add_page_break()
 
 def build_section_19(doc):
-    # ═══════════════════════════════════════
-    # SECTION 19 — MEET THE TEAM / EDITORIAL
-    # ═══════════════════════════════════════
-    section_header(doc, "Meet the Team — Editorial Board & Acknowledgments", "SECTION 19 — EDITORIAL CREDITS")
+    section_header(doc, "Editorial Board & Acknowledgments", "SECTION 19 — MEET THE EDITORIAL TEAM")
 
-    body(doc,
-        "The production of the Annual Magazine 2025–26 has been a collaborative endeavor driven by faculty mentors and student editors "
-        "committed to chronicling the excellence of the Department of Computer Engineering.")
+    callout_box(doc,
+        "\"This Annual Magazine represents the collective intellect, artistic dedication, and academic vibrancy of the Department of Computer Engineering. We express our deepest gratitude to our institution's leadership, our faculty, staff, alumni, and our brilliant students whose achievements grace these pages.\"",
+        title="EDITORIAL NOTE & CONCLUDING REFLECTIONS",
+        border_color=GOLD_HEX, bg_color=GOLD_BG_HEX
+    )
 
-    team_data = [
-        ("Chief Patron", "Dr. Bhalchandra Chaudhari", "Principal, Sardar Patel Institute of Technology"),
-        ("Editor-in-Chief", "Dr. Sudhir N. Dhage", "Professor & Head, Department of Computer Engineering"),
-        ("Faculty Advisory Board", "Dr. Surekha Dholay", "Associate Professor & NBA Coordinator"),
-        ("Faculty Advisory Board", "Dr. Kailas K. Devadkar", "Associate Professor & R&D Coordinator"),
-        ("Faculty Advisory Board", "Dr. Prasenjit Bhavathankar", "Associate Professor & Autonomy In-charge"),
-        ("Faculty Advisory Board", "Dr. Pramod Bide", "Associate Professor & T&P In-charge"),
-        ("Faculty Advisory Board", "Dr. Jignesh Sisodia", "Associate Professor & Exam In-charge"),
-        ("Faculty Advisory Board", "Dr. Rupali Sawant", "Associate Professor & M.Tech Coordinator"),
-        ("Faculty Editor & Coordinator", "Prof. Swapnali Kurhade", "Assistant Professor (Student Activities & Outreach)"),
-        ("Faculty Editor & Coordinator", "Prof. Anand Godbole", "Assistant Professor (CSI Counselor & Publications)"),
-        ("Student Chief Editor", "Student Editorial Lead", "Department of Computer Engineering (Final Year)"),
-        ("Student Design & Visuals", "Design & Layout Team", "Department of Computer Engineering (Creative Wing)"),
-        ("Data Curation & Analytics", "Student Analytics Team", "Department of Computer Engineering (Audit Wing)")
+    sub_section_header(doc, "Editorial & Advisory Leadership", "19.1")
+    ed_headers = ["Designation / Role", "Name", "Institutional Affiliation"]
+    ed_rows = [
+        ["Chief Patron", "Dr. Bhalchandra Chaudhari", "Principal, Sardar Patel Institute of Technology"],
+        ["Editor-in-Chief", "Dr. Sudhir N. Dhage", "Professor & Head, Department of Computer Engineering"],
+        ["Faculty Editorial Advisor", "Prof. Swapnali Kurhade", "Assistant Professor, Department of Computer Engineering"],
+        ["Faculty Editorial Advisor", "Prof. Jyoti Ramteke", "Assistant Professor, Department of Computer Engineering"],
+        ["Faculty Editorial Advisor", "Prof. Reeta Koshy", "Assistant Professor, Department of Computer Engineering"],
+        ["Student Editorial Lead", "Department Student Editorial Committee", "Department of Computer Engineering, S.P.I.T."]
     ]
+    data_table(doc, ed_headers, ed_rows, col_widths=[2.2, 2.5, 2.3])
 
-    data_table(doc, ["Role in Editorial Board", "Name", "Designation / Portfolio"], team_data, col_widths=[2.2, 2.2, 2.8], compact=True)
+    add_spacer(doc, 12)
 
-    gold_rule(doc)
-
-    vision_box(doc, "INSTITUTIONAL ACKNOWLEDGMENTS",
-        "The Editorial Board expresses its deepest gratitude to the Management of Bharatiya Vidya Bhavan, "
-        "Principal Dr. Bhalchandra Chaudhari, all faculty members, laboratory staff, student contributors, "
-        "and our esteemed alumni whose dedication has made this publication a reality.")
-
-    body(doc,
-        "Published by the Department of Computer Engineering, Bharatiya Vidya Bhavan's Sardar Patel Institute of Technology, "
-        "Munshi Nagar, Andheri (West), Mumbai 400 058. © 2026 Department of Computer Engineering. All rights reserved.",
-        italic=True, color=GREY)
+    # Closing Footer Box
+    p_close = doc.add_paragraph()
+    p_close.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run_styled(p_close, "BHARATIYA VIDYA BHAVAN'S\n", 'Calibri', 11, bold=True, color=GOLD_DARK)
+    run_styled(p_close, "SARDAR PATEL INSTITUTE OF TECHNOLOGY\n", 'Cambria', 14, bold=True, color=NAVY)
+    run_styled(p_close, "DEPARTMENT OF COMPUTER ENGINEERING\n", 'Calibri', 11, bold=True, color=NAVY)
+    run_styled(p_close, "Munshi Nagar, Andheri (West), Mumbai — 400 058, Maharashtra, India\n", 'Calibri', 9.5, color=GREY)
+    run_styled(p_close, "Website: https://comp.spit.ac.in/ | Autonomous Institute Affiliated to University of Mumbai\n", 'Calibri', 9, italic=True, color=GREY)
+    run_styled(p_close, "© Academic Year 2025–2026. All Rights Reserved.", 'Calibri', 8.5, color=GREY)
